@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todosin/sl.dart';
+import 'package:todo_repository/repository.dart';
 
 main() async {
+  await DbManager.initHive();
+  await DbManager.boxCreate();
   setupLocator();
   runApp(MyApp());
 }
