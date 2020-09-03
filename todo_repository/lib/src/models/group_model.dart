@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 part 'group_model.g.dart';
 
 @HiveType(typeId: 2)
-class GroupModel extends Equatable {
+class GroupModel extends HiveObject with EquatableMixin {
   @HiveField(1)
   final String id;
 
@@ -17,8 +17,7 @@ class GroupModel extends Equatable {
 
   // List<TodoModel> todos;
 
-  const GroupModel(
-      {@required this.id, @required this.color, @required this.name});
+  GroupModel({@required this.id, @required this.color, @required this.name});
 
   GroupModel copyWith({String id, Color color, String name}) => GroupModel(
         id: id ?? this.id,

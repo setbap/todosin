@@ -4,11 +4,30 @@ import 'package:hive/hive.dart';
 
 part 'todo_model.g.dart';
 
-enum TodoStatus { TODO, DOING, DONE }
-enum TodoPriority { LOW, MEDIUM, HIGH, CRITICAL }
+@HiveType(typeId: 4)
+enum TodoStatus {
+  @HiveField(1)
+  TODO,
+  @HiveField(2)
+  DOING,
+  @HiveField(3)
+  DONE,
+}
+
+@HiveType(typeId: 4)
+enum TodoPriority {
+  @HiveField(1)
+  LOW,
+  @HiveField(2)
+  MEDIUM,
+  @HiveField(3)
+  HIGH,
+  @HiveField(4)
+  CRITICAL,
+}
 
 @HiveType(typeId: 3)
-class TodoModel extends Equatable {
+class TodoModel extends HiveObject with EquatableMixin {
   @HiveField(1)
   final String id;
 
@@ -36,7 +55,7 @@ class TodoModel extends Equatable {
   @HiveField(9)
   final String groupId;
 
-  const TodoModel({
+  TodoModel({
     @required this.id,
     @required this.task,
     String note = '',

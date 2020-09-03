@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 part 'color_model.g.dart';
 
 @HiveType(typeId: 1)
-class ColorModel extends Equatable {
+class ColorModel extends HiveObject with EquatableMixin {
   @HiveField(1)
   final String id;
 
@@ -15,7 +15,7 @@ class ColorModel extends Equatable {
   @HiveField(3)
   final String colorName;
 
-  const ColorModel({
+  ColorModel({
     @required this.id,
     @required this.color,
     @required this.colorName,
