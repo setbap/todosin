@@ -1,6 +1,6 @@
-import 'package:todos_repository/src/groups_repository.dart';
-import 'package:todos_repository/src/models/models.dart';
-import 'package:todos_repository/src/Db_manager.dart';
+import './groups_repository.dart';
+import './models/models.dart';
+import './Db_manager.dart';
 
 class HiveGroupsRepository extends GroupsRepository {
   final DbManager _manager;

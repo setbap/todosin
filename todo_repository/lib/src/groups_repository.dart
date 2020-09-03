@@ -1,4 +1,4 @@
-import 'package:todos_repository/src/models/models.dart';
+import './models/models.dart';
 
 abstract class GroupsRepository {
   Future<void> addGroup(GroupModel model);

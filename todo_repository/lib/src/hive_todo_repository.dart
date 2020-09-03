@@ -1,6 +1,6 @@
-import 'package:todos_repository/src/models/models.dart';
-import 'package:todos_repository/src/Db_manager.dart';
-import 'package:todos_repository/src/todos_repository.dart';
+import './models/models.dart';
+import './Db_manager.dart';
+import './todos_repository.dart';
 
 class HiveTodosRepository extends TodosRepository {
   final DbManager _manager;

@@ -1,4 +1,4 @@
-library todos_repository;
+library todo_repository;
 
 export 'src/Db_manager.dart';
 export 'src/todos_repository.dart';

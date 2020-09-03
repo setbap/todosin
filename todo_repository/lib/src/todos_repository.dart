@@ -1,4 +1,4 @@
-import 'package:todos_repository/src/models/models.dart';
+import './models/models.dart';
 
 abstract class TodosRepository {
   Future<void> addTodo(TodoModel model);

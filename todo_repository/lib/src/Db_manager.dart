@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todos_repository/src/models/models.dart';
+import './models/models.dart';
 import 'package:path_provider/path_provider.dart';
 
 const TODO_BOX_NAME = "TODO_BOX_NAME";

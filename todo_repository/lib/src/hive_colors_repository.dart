@@ -1,5 +1,5 @@
-import 'package:todos_repository/src/colors_repository.dart';
-import 'package:todos_repository/src/models/color_model.dart';
+import './colors_repository.dart';
+import './models/color_model.dart';
 
 import 'Db_manager.dart';
 
