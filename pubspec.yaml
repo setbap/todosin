@@ -35,6 +35,9 @@ dependencies:
   get_it: ^4.0.4
   injectable: ^1.0.4
   path_provider: ^1.6.11
+  rxdart: ^0.24.1
+  todo_repository:
+    path: todo_repository
 
 dev_dependencies:
   hive_generator: ^0.7.1
