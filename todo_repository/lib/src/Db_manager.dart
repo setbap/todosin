@@ -5,9 +5,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import './models/models.dart';
 import 'package:path_provider/path_provider.dart';
 
-const TODO_BOX_NAME = "TODO_BOX_NAME";
-const GROUP_BOX_NAME = "GROUP_BOX_NAME";
-const COLOR_BOX_NAME = "COLOR_BOX_NAME";
+const TODO_BOX_NAME = "todo_box";
+const GROUP_BOX_NAME = "group_box";
+const COLOR_BOX_NAME = "colors_box";
 
 class DbManager {
   final Box<ColorModel> colorBox;
@@ -33,7 +33,7 @@ class DbManager {
   }
 
   static boxCreate() async {
-    await Hive.openBox<ColorModel>(TODO_BOX_NAME);
+    await Hive.openBox<ColorModel>(COLOR_BOX_NAME);
     await Hive.openBox<GroupModel>(GROUP_BOX_NAME);
     await Hive.openBox<TodoModel>(TODO_BOX_NAME);
   }
