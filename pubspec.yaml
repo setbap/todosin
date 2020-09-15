@@ -38,6 +38,8 @@ dependencies:
   rxdart: ^0.24.1
   todo_repository:
     path: todo_repository
+  equatable: ^1.2.5
+  formz: ^0.3.1
 
 dev_dependencies:
   hive_generator: ^0.7.1
