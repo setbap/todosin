@@ -10,7 +10,7 @@ class ColorModel extends HiveObject with EquatableMixin {
   final String id;
 
   @HiveField(2)
-  final Color color;
+  final int color;
 
   @HiveField(3)
   final String colorName;
@@ -21,7 +21,7 @@ class ColorModel extends HiveObject with EquatableMixin {
     @required this.colorName,
   });
 
-  ColorModel copyWith({String id, Color color, String name}) => ColorModel(
+  ColorModel copyWith({String id, int color, String name}) => ColorModel(
         id: id ?? this.id,
         color: color ?? this.color,
         colorName: colorName ?? this.colorName,

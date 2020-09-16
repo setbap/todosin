@@ -5,8 +5,8 @@ var locator = GetIt.I;
 
 void setupLocator() {
   locator.registerSingleton(DbManager());
+  locator.registerFactory(() => HiveColorsRepository(locator()));
   locator.registerFactory(() => HiveTodosRepository(locator()));
   locator.registerFactory(() => HiveGroupsRepository(locator()));
-  locator.registerFactory(() => HiveColorsRepository(locator()));
   print("serice locator");
 }

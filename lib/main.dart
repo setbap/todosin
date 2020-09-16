@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todosin/cubit/UserFormz.dart';
-import 'package:todosin/second.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart' hide ColorModel;
+import 'package:hive/hive.dart';
+import 'package:todosin/bloc/edit_color_bloc/edit_color_bloc.dart';
+import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
+import 'package:todosin/model/ColorFormModel.dart';
 import 'package:todosin/sl.dart';
 import 'package:todo_repository/repository.dart';
-import 'cubit/usercubit_cubit.dart';
 
 main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Hive.registerAdapter<ColorModel>(ColorModelAdapter());
+  Hive.registerAdapter<GroupModel>(GroupModelAdapter());
+  Hive.registerAdapter<TodoModel>(TodoModelAdapter());
   await DbManager.initHive();
   await DbManager.boxCreate();
   setupLocator();
@@ -17,7 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UsercubitCubit(),
+      lazy: false,
+      create: (context) => RetrieveColorBloc(locator()),
       child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
@@ -37,57 +44,157 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+        lazy: false,
+        create: (context) => EditColorBloc(context.bloc<RetrieveColorBloc>()),
+        child: MainScaffold());
+  }
+}
+
+class MainScaffold extends StatefulWidget {
+  const MainScaffold({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _MainScaffoldState createState() => _MainScaffoldState();
+}
+
+class _MainScaffoldState extends State<MainScaffold> {
+  bool showFAB = true;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("sina"),
+        title: Text("Sina"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Second(),
-        )),
+      floatingActionButton: BlocBuilder<EditColorBloc, EditColorState>(
+        builder: (context, state) {
+          if (showFAB) return FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () {
+                setState(() {
+                  showFAB=false;
+                });
+                PersistentBottomSheetController controller =
+                    Scaffold.of(context).showBottomSheet(
+                  (innerContext) {
+                    return BottomSheetContainer(
+                      state: state,
+                      upperContext: context,
+                    );
+                  },
+                );
+
+                controller.closed
+                    .then((value) => setState(() => showFAB = true));
+              });
+          return Container();
+        },
       ),
-      body: ListView(
-        children: [
-          TextField(
-            onChanged: context.bloc<UsercubitCubit>().passwordChange,
-            decoration: InputDecoration(labelText: "password"),
-          ),
-          SizedBox(
-            height: 32,
-          ),
-          UsernameField(),
-          SizedBox(
-            height: 32,
-          ),
-          BlocBuilder<UsercubitCubit, UsercubitState>(
-            builder: (context, state) => Text(state.toString()),
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: BlocBuilder<RetrieveColorBloc, List<ColorModel>>(
+          builder: (context, state) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.length,
+              itemBuilder: (context, index) => ListTile(
+                tileColor: Color(state[index].color),
+                title: Text(state[index].colorName),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 }
 
-class UsernameField extends StatelessWidget {
-  const UsernameField({
-    Key key,
-  }) : super(key: key);
+class BottomSheetContainer extends StatelessWidget {
+  final EditColorState state;
+  final BuildContext upperContext;
+
+  const BottomSheetContainer({this.state, this.upperContext});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UsercubitCubit, UsercubitState>(
-      buildWhen: (previous, current) => previous.username != current.username,
-      builder: (context, state) {
-        return TextField(
-          onChanged: (s) => context.bloc<UsercubitCubit>().usernameChange(s),
-          decoration: InputDecoration(
-            labelText: "username",
-            errorText: state.username.error == InputError.empty
-                ? "empty"
-                : state.username.error == InputError.middle ? "middle" : null,
+    return Container(
+      height: 300,
+      color: Colors.grey.shade400,
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Text('AlertDialog Title'),
+          SingleChildScrollView(
+            child: ListBody(
+              children: [
+                MaterialButton(
+                    color: state.myColor.value,
+                    child: Text("data"),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            titlePadding: const EdgeInsets.all(0.0),
+                            contentPadding: const EdgeInsets.all(0.0),
+                            content: SingleChildScrollView(
+                              child: ColorPicker(
+                                pickerColor: state.myColor.value,
+                                onColorChanged: (c) =>
+                                    upperContext.bloc<EditColorBloc>().add(
+                                          EditColorMyColorChangedEvent(c),
+                                        ),
+                                colorPickerWidth: 300.0,
+                                pickerAreaHeightPercent: 0.7,
+                                enableAlpha: true,
+                                displayThumbColor: true,
+                                showLabel: true,
+                                paletteType: PaletteType.hsv,
+                                pickerAreaBorderRadius: const BorderRadius.only(
+                                  topLeft: const Radius.circular(2.0),
+                                  topRight: const Radius.circular(2.0),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }),
+                SizedBox(height: 32),
+                BlocBuilder<EditColorBloc, EditColorState>(
+                  builder: (context, state) {
+                    return TextField(
+                      onChanged: (s) {
+                        upperContext
+                            .bloc<EditColorBloc>()
+                            .add(EditColorColorNameChangedEvent(s));
+                      },
+                      decoration: InputDecoration(
+                        labelText: "username",
+                        errorText: context
+                            .bloc<EditColorBloc>()
+                            .state
+                            .colorName
+                            .error
+                            .errDescribe,
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 32),
+                MaterialButton(
+                  onPressed: () {
+                    context.bloc<EditColorBloc>().add(EditColorSubmitEvent());
+                  },
+                  child: Text("submit"),
+                )
+              ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

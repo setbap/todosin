@@ -5,10 +5,11 @@ class UsercubitState extends Equatable {
   final Password password;
   final FormzStatus status;
 
-  const UsercubitState(
-      {@required this.username,
-      @required this.password,
-      @required this.status});
+  const UsercubitState({
+    @required this.username,
+    @required this.password,
+    @required this.status,
+  });
 
   @override
   List<Object> get props => [username, password];

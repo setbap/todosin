@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todosin/cubit/usercubit_cubit.dart';
+import 'package:todosin/bloc/edit_color_bloc/edit_color_bloc.dart';
 
 class Second extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class _SecondState extends State<Second> {
       body: Center(
         child: Container(
           child: Text(
-            context.bloc<UsercubitCubit>().state.toString(),
+            context.bloc<EditColorBloc>().state.toString(),
           ),
         ),
       ),
