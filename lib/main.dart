@@ -115,10 +115,12 @@ class _MainScaffoldState extends State<MainScaffold> {
                     setState(() {
                       showFAB = false;
                     });
-                    context.bloc<EditColorBloc>().add(
-                        EditColorInitialWithValueEvent(
-                            color: state[index].color,
-                            colorName: state[index].colorName));
+                    context
+                        .bloc<EditColorBloc>()
+                        .add(EditColorInitialWithValueEvent(
+                          color: state[index].color,
+                          colorName: state[index].colorName,
+                        ));
                     PersistentBottomSheetController controller =
                         Scaffold.of(context).showBottomSheet(
                       (innerContext) {
