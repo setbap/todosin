@@ -2,7 +2,7 @@ part of 'edit_color_bloc.dart';
 
 class EditColorState extends Equatable {
   final MyColor myColor;
-  final ColorName colorName;
+  final Name colorName;
   final FormzStatus status;
 
   const EditColorState({
@@ -17,7 +17,7 @@ class EditColorState extends Equatable {
   EditColorState copyWith({
     FormzStatus status,
     MyColor myColor,
-    ColorName colorName,
+    Name colorName,
   }) {
     return EditColorState(
       status: status ?? this.status,

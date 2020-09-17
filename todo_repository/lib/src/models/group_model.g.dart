@@ -18,7 +18,7 @@ class GroupModelAdapter extends TypeAdapter<GroupModel> {
     };
     return GroupModel(
       id: fields[1] as String,
-      color: fields[2] as Color,
+      color: fields[2] as int,
       name: fields[3] as String,
     );
   }

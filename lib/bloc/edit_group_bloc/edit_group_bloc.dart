@@ -11,69 +11,69 @@ import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
 
 import '../../model/ColorFormModel.dart';
 
-part 'edit_color_event.dart';
-part 'edit_color_state.dart';
+part 'edit_group_event.dart';
+part 'edit_group_state.dart';
 
-class EditColorBloc extends Bloc<EditColorEvent, EditColorState> {
+class EditColorBloc extends Bloc<EditGroupEvent, EditGroupState> {
   var uuid = Uuid();
   final RetrieveColorBloc _retrieveColorBloc;
   EditColorBloc(this._retrieveColorBloc)
-      : super(EditColorState(
+      : super(EditGroupState(
           myColor: MyColor.pure(),
-          colorName: Name.pure(),
+          groupName: Name.pure(),
           status: FormzStatus.pure,
         ));
 
   @override
-  Stream<EditColorState> mapEventToState(
-    EditColorEvent event,
+  Stream<EditGroupState> mapEventToState(
+    EditGroupEvent event,
   ) async* {
-    if (event is EditColorInitialWithValueEvent) {
+    if (event is EditGroupInitialWithValueEvent) {
       final myColor = MyColor.dirty(value: Color(event.color));
-      final colorName = Name.dirty(value: event.colorName);
+      final groupName = Name.dirty(value: event.groupName);
       yield state.copyWith(
         myColor: myColor,
-        colorName: colorName,
-        status: Formz.validate([colorName, myColor]),
+        groupName: groupName,
+        status: Formz.validate([groupName, myColor]),
       );
     }
-    if (event is EditColorMyColorChangedEvent) {
+    if (event is EditGroupMyColorChangedEvent) {
       final myColor = MyColor.dirty(value: event.value);
       yield state.copyWith(
         myColor: myColor,
-        status: Formz.validate([state.colorName, myColor]),
+        status: Formz.validate([state.groupName, myColor]),
       );
-    } else if (event is EditColorColorNameChangedEvent) {
-      final colorName = Name.dirty(value: event.value);
+    } else if (event is EditGroupGroupNameChangedEvent) {
+      final groupName = Name.dirty(value: event.value);
       print(event.value);
       yield state.copyWith(
-        colorName: colorName,
-        status: Formz.validate([state.myColor, colorName]),
+        groupName: groupName,
+        status: Formz.validate([state.myColor, groupName]),
       );
     }
-    if (event is EditColorSubmitEvent) {
+    if (event is EditGroupSubmitEvent) {
       if (state.status.isValid) {
         yield state.copyWith(status: FormzStatus.submissionInProgress);
         try {
           if (event.id != null) {
-            _retrieveColorBloc.add(
-              RetrieveColorUpdateColorEvent(ColorModel(
-                id: event.id,
-                color: state.myColor.value.value,
-                colorName: state.colorName.value,
-              )),
-            );
+            // _retrieveColorBloc.add(
+            // RetrieveColorUpdateColorEvent(GroupModel(
+            //   id: event.id,
+            //   color: state.myColor.value.value,
+            //   name: state.groupName.value,
+            // )),
+            // );
           } else {
             _retrieveColorBloc.add(
               RetrieveColorAddColorEvent(
                 state.myColor.value,
-                state.colorName.value,
+                state.groupName.value,
               ),
             );
           }
           yield state.copyWith(
             // myColor: MyColor.pure(),
-            // colorName: ColorName.pure(),
+            // groupName: groupName.pure(),
             status: FormzStatus.submissionSuccess,
           );
         } catch (e) {

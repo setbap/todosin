@@ -31,10 +31,10 @@ class MyColor extends FormzInput<Color, InputError> {
   }
 }
 
-class ColorName extends FormzInput<String, InputError> {
-  const ColorName.pure() : super.pure("");
+class Name extends FormzInput<String, InputError> {
+  const Name.pure() : super.pure("");
 
-  const ColorName.dirty({String value = " "}) : super.dirty(value);
+  const Name.dirty({String value = " "}) : super.dirty(value);
 
   @override
   InputError validator(String value) {

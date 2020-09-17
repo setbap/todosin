@@ -10,7 +10,7 @@ class GroupModel extends HiveObject with EquatableMixin {
   final String id;
 
   @HiveField(2)
-  final Color color;
+  final int color;
 
   @HiveField(3)
   final String name;
@@ -19,7 +19,7 @@ class GroupModel extends HiveObject with EquatableMixin {
 
   GroupModel({@required this.id, @required this.color, @required this.name});
 
-  GroupModel copyWith({String id, Color color, String name}) => GroupModel(
+  GroupModel copyWith({String id, int color, String name}) => GroupModel(
         id: id ?? this.id,
         color: color ?? this.color,
         name: name ?? this.name,
