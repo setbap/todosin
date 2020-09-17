@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
+import 'package:todo_repository/repository.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
@@ -27,6 +28,15 @@ class EditColorBloc extends Bloc<EditColorEvent, EditColorState> {
   Stream<EditColorState> mapEventToState(
     EditColorEvent event,
   ) async* {
+    if (event is EditColorInitialWithValueEvent) {
+      final myColor = MyColor.dirty(value: Color(event.color));
+      final colorName = ColorName.dirty(value: event.colorName);
+      yield state.copyWith(
+        myColor: myColor,
+        colorName: colorName,
+        status: Formz.validate([colorName, myColor]),
+      );
+    }
     if (event is EditColorMyColorChangedEvent) {
       final myColor = MyColor.dirty(value: event.value);
       yield state.copyWith(
@@ -45,13 +55,22 @@ class EditColorBloc extends Bloc<EditColorEvent, EditColorState> {
       if (state.status.isValid) {
         yield state.copyWith(status: FormzStatus.submissionInProgress);
         try {
-          _retrieveColorBloc.add(
-            RetrieveColorAddColorEvent(
-              state.myColor.value,
-              state.colorName.value,
-            ),
-          );
-
+          if (event.id != null) {
+            _retrieveColorBloc.add(
+              RetrieveColorUpdateColorEvent(ColorModel(
+                id: event.id,
+                color: state.myColor.value.value,
+                colorName: state.colorName.value,
+              )),
+            );
+          } else {
+            _retrieveColorBloc.add(
+              RetrieveColorAddColorEvent(
+                state.myColor.value,
+                state.colorName.value,
+              ),
+            );
+          }
           yield state.copyWith(
             // myColor: MyColor.pure(),
             // colorName: ColorName.pure(),

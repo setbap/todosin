@@ -24,5 +24,15 @@ class EditColorColorNameChangedEvent extends EditColorEvent {
 }
 
 class EditColorSubmitEvent extends EditColorEvent {
-  const EditColorSubmitEvent();
+  final String id;
+  const EditColorSubmitEvent({this.id});
+}
+
+class EditColorInitialWithValueEvent extends EditColorEvent {
+  final String colorName;
+  final int color;
+  const EditColorInitialWithValueEvent({this.color, this.colorName});
+
+  @override
+  List<Object> get props => [color, colorName];
 }

@@ -30,6 +30,14 @@ class RetrieveColorBloc extends Bloc<RetrieveColorEvent, List<ColorModel>> {
       ));
       yield await _repository.allColors();
     } else if (event is RetrieveColorUpdateColorEvent) {
+      _repository.updateColor(event.model);
+      yield await _repository.allColors();
+    } else if (event is RetrieveColorDeleteColorEvent) {
+      try {
+        await event.model.delete();
+      } catch (e) {
+        print("err in dismiss");
+      }
       yield await _repository.allColors();
     }
   }

@@ -17,6 +17,22 @@ class RetrieveColorAddColorEvent extends RetrieveColorEvent {
   List<Object> get props => [color, colorName];
 }
 
-class RetrieveColorUpdateColorEvent extends RetrieveColorEvent {}
+class RetrieveColorUpdateColorEvent extends RetrieveColorEvent {
+  final ColorModel model;
+
+  const RetrieveColorUpdateColorEvent(this.model);
+
+  @override
+  List<Object> get props => [model];
+}
 
 class RetrieveColorGetAllColorEvent extends RetrieveColorEvent {}
+
+class RetrieveColorDeleteColorEvent extends RetrieveColorEvent {
+  final ColorModel model;
+
+  const RetrieveColorDeleteColorEvent(this.model);
+
+  @override
+  List<Object> get props => [model];
+}

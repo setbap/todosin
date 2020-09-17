@@ -71,25 +71,26 @@ class _MainScaffoldState extends State<MainScaffold> {
       ),
       floatingActionButton: BlocBuilder<EditColorBloc, EditColorState>(
         builder: (context, state) {
-          if (showFAB) return FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () {
-                setState(() {
-                  showFAB=false;
-                });
-                PersistentBottomSheetController controller =
-                    Scaffold.of(context).showBottomSheet(
-                  (innerContext) {
-                    return BottomSheetContainer(
-                      state: state,
-                      upperContext: context,
-                    );
-                  },
-                );
+          if (showFAB)
+            return FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () {
+                  setState(() {
+                    showFAB = false;
+                  });
+                  PersistentBottomSheetController controller =
+                      Scaffold.of(context).showBottomSheet(
+                    (innerContext) {
+                      return BottomSheetContainer(
+                        state: state,
+                        upperContext: context,
+                      );
+                    },
+                  );
 
-                controller.closed
-                    .then((value) => setState(() => showFAB = true));
-              });
+                  controller.closed
+                      .then((value) => setState(() => showFAB = true));
+                });
           return Container();
         },
       ),
@@ -99,9 +100,47 @@ class _MainScaffoldState extends State<MainScaffold> {
             return ListView.builder(
               shrinkWrap: true,
               itemCount: state.length,
-              itemBuilder: (context, index) => ListTile(
-                tileColor: Color(state[index].color),
-                title: Text(state[index].colorName),
+              itemBuilder: (context, index) => Dismissible(
+                key: Key(state[index].id),
+                background: Container(
+                  color: Colors.red,
+                ),
+                onDismissed: (direction) {
+                  context
+                      .bloc<RetrieveColorBloc>()
+                      .add(RetrieveColorDeleteColorEvent(state[index]));
+                },
+                child: ListTile(
+                  onLongPress: () {
+                    setState(() {
+                      showFAB = false;
+                    });
+                    context.bloc<EditColorBloc>().add(
+                        EditColorInitialWithValueEvent(
+                            color: state[index].color,
+                            colorName: state[index].colorName));
+                    PersistentBottomSheetController controller =
+                        Scaffold.of(context).showBottomSheet(
+                      (innerContext) {
+                        return BlocBuilder<EditColorBloc, EditColorState>(
+                          builder: (context, editColorState) {
+                            return BottomSheetContainer(
+                              state: editColorState,
+                              upperContext: context,
+                              id: state[index].id,
+                              update: true,
+                            );
+                          },
+                        );
+                      },
+                    );
+
+                    controller.closed
+                        .then((value) => setState(() => showFAB = true));
+                  },
+                  tileColor: Color(state[index].color),
+                  title: Text(state[index].colorName),
+                ),
               ),
             );
           },
@@ -114,8 +153,15 @@ class _MainScaffoldState extends State<MainScaffold> {
 class BottomSheetContainer extends StatelessWidget {
   final EditColorState state;
   final BuildContext upperContext;
+  final String id;
+  final bool update;
 
-  const BottomSheetContainer({this.state, this.upperContext});
+  const BottomSheetContainer({
+    @required this.state,
+    @required this.upperContext,
+    this.id,
+    this.update,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +211,8 @@ class BottomSheetContainer extends StatelessWidget {
                 SizedBox(height: 32),
                 BlocBuilder<EditColorBloc, EditColorState>(
                   builder: (context, state) {
-                    return TextField(
+                    return TextFormField(
+                      initialValue: state.colorName.value,
                       onChanged: (s) {
                         upperContext
                             .bloc<EditColorBloc>()
@@ -186,7 +233,12 @@ class BottomSheetContainer extends StatelessWidget {
                 SizedBox(height: 32),
                 MaterialButton(
                   onPressed: () {
-                    context.bloc<EditColorBloc>().add(EditColorSubmitEvent());
+                    if (update != null)
+                      context
+                          .bloc<EditColorBloc>()
+                          .add(EditColorSubmitEvent(id: id));
+                    else
+                      context.bloc<EditColorBloc>().add(EditColorSubmitEvent());
                   },
                   child: Text("submit"),
                 )
