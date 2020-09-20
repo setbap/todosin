@@ -1,37 +1,37 @@
 part of 'retrieve_color_bloc.dart';
 
-abstract class RetrieveColorEvent extends Equatable {
-  const RetrieveColorEvent();
+abstract class RetrieveGroupEvent extends Equatable {
+  const RetrieveGroupEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class RetrieveColorAddColorEvent extends RetrieveColorEvent {
+class RetrieveGroupAddGroupEvent extends RetrieveGroupEvent {
   final Color color;
-  final String colorName;
+  final String name;
 
-  const RetrieveColorAddColorEvent(this.color, this.colorName);
+  const RetrieveGroupAddGroupEvent(this.color, this.name);
 
   @override
-  List<Object> get props => [color, colorName];
+  List<Object> get props => [color, name];
 }
 
-class RetrieveColorUpdateColorEvent extends RetrieveColorEvent {
-  final ColorModel model;
+class RetrieveGroupUpdateColorEvent extends RetrieveGroupEvent {
+  final GroupModel model;
 
-  const RetrieveColorUpdateColorEvent(this.model);
+  const RetrieveGroupUpdateColorEvent(this.model);
 
   @override
   List<Object> get props => [model];
 }
 
-class RetrieveColorGetAllColorEvent extends RetrieveColorEvent {}
+class RetrieveGroupGetAllGroupEvent extends RetrieveGroupEvent {}
 
-class RetrieveColorDeleteColorEvent extends RetrieveColorEvent {
-  final ColorModel model;
+class RetrieveGroupDeleteGroupEvent extends RetrieveGroupEvent {
+  final GroupModel model;
 
-  const RetrieveColorDeleteColorEvent(this.model);
+  const RetrieveGroupDeleteGroupEvent(this.model);
 
   @override
   List<Object> get props => [model];

@@ -6,6 +6,21 @@ import 'package:todosin/bloc/edit_color_bloc/edit_color_bloc.dart';
 import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
 import 'package:todosin/model/ColorFormModel.dart';
 
+class SecondPage extends StatefulWidget {
+  @override
+  _SecondPageState createState() => _SecondPageState();
+}
+
+class _SecondPageState extends State<SecondPage> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+        lazy: false,
+        create: (context) => EditColorBloc(context.bloc<RetrieveColorBloc>()),
+        child: MainScaffold());
+  }
+}
+
 class MainScaffold extends StatefulWidget {
   const MainScaffold({
     Key key,

@@ -8,37 +8,37 @@ import 'package:uuid/uuid.dart';
 part 'retrieve_color_event.dart';
 // part 'retrieve_color_state.dart';
 
-class RetrieveColorBloc extends Bloc<RetrieveColorEvent, List<ColorModel>> {
+class RetrieveGroupBloc extends Bloc<RetrieveGroupEvent, List<GroupModel>> {
   Uuid uuid = Uuid();
-  HiveColorsRepository _repository;
-  RetrieveColorBloc(this._repository) : super([]) {
-    add(RetrieveColorGetAllColorEvent());
+  HiveGroupsRepository _repository;
+  RetrieveGroupBloc(this._repository) : super([]) {
+    add(RetrieveGroupGetAllGroupEvent());
   }
 
   @override
-  Stream<List<ColorModel>> mapEventToState(
-    RetrieveColorEvent event,
+  Stream<List<GroupModel>> mapEventToState(
+    RetrieveGroupEvent event,
   ) async* {
-    if (event is RetrieveColorGetAllColorEvent) {
-      var all = await _repository.allColors();
+    if (event is RetrieveGroupGetAllGroupEvent) {
+      var all = await _repository.allGroups();
       yield all;
-    } else if (event is RetrieveColorAddColorEvent) {
-      await _repository.addColor(ColorModel(
+    } else if (event is RetrieveGroupAddGroupEvent) {
+      await _repository.addGroup(GroupModel(
         id: uuid.v4(),
         color: event.color.value,
-        colorName: event.colorName,
+        name: event.name,
       ));
-      yield await _repository.allColors();
-    } else if (event is RetrieveColorUpdateColorEvent) {
-      _repository.updateColor(event.model);
-      yield await _repository.allColors();
-    } else if (event is RetrieveColorDeleteColorEvent) {
+      yield await _repository.allGroups();
+    } else if (event is RetrieveGroupUpdateColorEvent) {
+      _repository.updateGroup(event.model);
+      yield await _repository.allGroups();
+    } else if (event is RetrieveGroupDeleteGroupEvent) {
       try {
         await event.model.delete();
       } catch (e) {
         print("err in dismiss");
       }
-      yield await _repository.allColors();
+      yield await _repository.allGroups();
     }
   }
 }

@@ -4,20 +4,18 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
-import 'package:todo_repository/repository.dart';
+import 'package:todosin/bloc/retrieve_group_bloc/retrieve_color_bloc.dart';
 import 'package:uuid/uuid.dart';
-
-import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
 
 import '../../model/ColorFormModel.dart';
 
 part 'edit_group_event.dart';
 part 'edit_group_state.dart';
 
-class EditColorBloc extends Bloc<EditGroupEvent, EditGroupState> {
+class EditGroupBloc extends Bloc<EditGroupEvent, EditGroupState> {
   var uuid = Uuid();
-  final RetrieveColorBloc _retrieveColorBloc;
-  EditColorBloc(this._retrieveColorBloc)
+  final RetrieveGroupBloc _retrieveGroupBlocBloc;
+  EditGroupBloc(this._retrieveGroupBlocBloc)
       : super(EditGroupState(
           myColor: MyColor.pure(),
           groupName: Name.pure(),
@@ -64,8 +62,8 @@ class EditColorBloc extends Bloc<EditGroupEvent, EditGroupState> {
             // )),
             // );
           } else {
-            _retrieveColorBloc.add(
-              RetrieveColorAddColorEvent(
+            _retrieveGroupBlocBloc.add(
+              RetrieveGroupAddGroupEvent(
                 state.myColor.value,
                 state.groupName.value,
               ),
