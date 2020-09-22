@@ -4,7 +4,7 @@ import 'package:todo_repository/repository.dart';
 import 'package:todosin/bloc/edit_group_bloc/edit_group_bloc.dart';
 import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
 import 'package:todosin/bloc/retrieve_group_bloc/retrieve_color_bloc.dart';
-import 'package:todosin/model/ColorFormModel.dart';
+import 'package:todosin/model/model.dart';
 import 'package:todosin/screens/color_edit.dart' as second;
 
 class MyHomePage extends StatefulWidget {

@@ -4,7 +4,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart' hide ColorModel;
 import 'package:todo_repository/repository.dart';
 import 'package:todosin/bloc/edit_color_bloc/edit_color_bloc.dart';
 import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
-import 'package:todosin/model/ColorFormModel.dart';
+import 'package:todosin/model/model.dart';
 
 class SecondPage extends StatefulWidget {
   @override

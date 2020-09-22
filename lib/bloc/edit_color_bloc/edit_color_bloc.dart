@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
 
-import '../../model/ColorFormModel.dart';
+import '../../model/model.dart';
 
 part 'edit_color_event.dart';
 part 'edit_color_state.dart';

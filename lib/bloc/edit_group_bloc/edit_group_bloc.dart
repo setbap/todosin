@@ -7,7 +7,7 @@ import 'package:formz/formz.dart';
 import 'package:todosin/bloc/retrieve_group_bloc/retrieve_color_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../model/ColorFormModel.dart';
+import '../../model/model.dart';
 
 part 'edit_group_event.dart';
 part 'edit_group_state.dart';
