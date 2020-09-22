@@ -38,7 +38,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sina"),
+        title: Text("group edit"),
         actions: [
           IconButton(
             icon: Icon(Icons.ad_units),

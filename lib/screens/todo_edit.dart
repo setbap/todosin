@@ -1,30 +1,10 @@
 import 'package:flutter/material.dart';
-
-extension WidgetPadding on Widget {
-  /// Wrapp [widget] with [Padding] and aplly [input] to x axis
-  Widget px(double paddingX) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: paddingX),
-      child: this,
-    );
-  }
-
-  /// Wrapp [widget] with [Padding] and aplly [input] to y axis
-  Widget py(double paddingY) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: paddingY),
-      child: this,
-    );
-  }
-
-  /// Wrapp [widget] with [Padding] and aplly [input] to all side
-  Widget p(double padding) {
-    return Padding(
-      padding: EdgeInsets.all(padding),
-      child: this,
-    );
-  }
-}
+import 'package:todo_repository/repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todosin/bloc/retrieve_color_bloc/retrieve_color_bloc.dart';
+import 'package:todosin/bloc/retrieve_group_bloc/retrieve_color_bloc.dart';
+import 'package:todosin/util/extensions.dart';
+import 'group_edit.dart';
 
 List<String> fakeList = ["one", "two", "three"];
 
@@ -43,6 +23,17 @@ class TodEditScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("todo edit"),
+        actions: [
+          FlatButton.icon(
+            label: Text("data"),
+            icon: Icon(Icons.add),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => MyHomePage(),
+              ),
+            ),
+          )
+        ],
       ),
       body: TodoEditBody(),
     );
@@ -69,58 +60,153 @@ class TodoEditBody extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey.shade400,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: DropdownButton<String>(
-                  value: fakeList[0],
-                  isExpanded: true,
-                  items: fakeList
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e).p(8),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) => print(value),
-                  underline: Container(
-                    height: 3,
-                  ),
-                ),
-              ).p(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Select Color").px(16),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey.shade400,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: BlocBuilder<RetrieveColorBloc, List<ColorModel>>(
+                      builder: (context, state) {
+                        return DropdownButton<ColorModel>(
+                          value: state.isEmpty ? null : state[0],
+                          hint: Text("pls insert color").px(8),
+                          isExpanded: true,
+                          items: state
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e.colorName).p(8),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) => print(value),
+                          underline: Container(
+                            height: 3,
+                          ),
+                        );
+                      },
+                    ),
+                  ).p(8),
+                ],
+              ),
             ),
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey.shade400,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: DropdownButton<String>(
-                  value: fakeList[0],
-                  isExpanded: true,
-                  items: fakeList
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e).p(8),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) => print(value),
-                  underline: Container(
-                    height: 3,
-                  ),
-                ),
-              ).p(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Select Group").px(16),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey.shade400,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: BlocBuilder<RetrieveGroupBloc, List<GroupModel>>(
+                      builder: (context, state) {
+                        return DropdownButton<GroupModel>(
+                          value: state.isEmpty ? null : state[0],
+                          hint: Text("pls insert color").px(8),
+                          isExpanded: true,
+                          items: state
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e.name).p(8),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) => print(value),
+                          underline: Container(
+                            height: 3,
+                          ),
+                        );
+                      },
+                    ),
+                  ).p(8),
+                ],
+              ),
+            ),
+          ],
+        ).py(16),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Select Priroty").px(16),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey.shade400,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: DropdownButton<TodoPriority>(
+                      value: TodoPriority.MEDIUM,
+                      hint: Text("pls select priority").px(8),
+                      isExpanded: true,
+                      items: TodoPriority.values
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.toString().split(".")[1]).p(8),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) => print(value),
+                      underline: Container(
+                        height: 3,
+                      ),
+                    ),
+                  ).p(8),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Select Todo Status").px(16),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey.shade400,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: DropdownButton<TodoStatus>(
+                      value: TodoStatus.TODO,
+                      hint: Text("pls insert color").px(8),
+                      isExpanded: true,
+                      items: TodoStatus.values
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.toString().split(".")[1]).p(8),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) => print(value),
+                      underline: Container(
+                        height: 3,
+                      ),
+                    ),
+                  ).p(8),
+                ],
+              ),
             ),
           ],
         )

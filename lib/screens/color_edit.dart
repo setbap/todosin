@@ -37,7 +37,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sina"),
+        title: Text("edit color"),
       ),
       floatingActionButton: BlocBuilder<EditColorBloc, EditColorState>(
         builder: (context, state) {
