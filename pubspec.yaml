@@ -34,7 +34,7 @@ dependencies:
   bloc: ^6.0.1
   get_it: ^4.0.4
   injectable: ^1.0.4
-  path_provider: ^1.6.11
+  path_provider: ^1.6.15
   rxdart: ^0.24.1
   todo_repository:
     path: todo_repository
