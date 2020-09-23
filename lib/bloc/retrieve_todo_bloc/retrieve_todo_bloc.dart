@@ -24,9 +24,10 @@ class RetrieveTodoBloc extends Bloc<RetrieveTodoEvent, List<TodoModel>> {
       var all = await _repository.allTodos();
       yield all;
     } else if (event is RetrieveTodoAddTodoEvent) {
+      print("aded");
       await _repository.addTodo(TodoModel(
         id: uuid.v4(),
-        color: event.color,
+        color: event.color.value,
         endDate: event.endDate,
         startDate: event.startDate,
         groupId: event.groupId,

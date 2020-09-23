@@ -7,11 +7,15 @@ import 'package:todosin/screens/todo_edit.dart';
 import 'package:todosin/sl.dart';
 import 'package:todo_repository/repository.dart';
 
+import 'bloc/retrieve_todo_bloc/retrieve_todo_bloc.dart';
+
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Hive.registerAdapter<ColorModel>(ColorModelAdapter());
   Hive.registerAdapter<GroupModel>(GroupModelAdapter());
   Hive.registerAdapter<TodoModel>(TodoModelAdapter());
+  Hive.registerAdapter<TodoPriority>(TodoPriorityAdapter());
+  Hive.registerAdapter<TodoStatus>(TodoStatusAdapter());
   await DbManager.initHive();
   await DbManager.boxCreate();
   setupLocator();
@@ -30,12 +34,13 @@ class MyApp extends StatelessWidget {
         BlocProvider<RetrieveGroupBloc>(
           create: (BuildContext context) => RetrieveGroupBloc(locator()),
         ),
-        // BlocProvider<RetrieveTodoBloc>(
-        //   create: (BuildContext context) => RetrieveTodoBloc(locator()),
-        // ),
+        BlocProvider<RetrieveTodoBloc>(
+          create: (BuildContext context) => RetrieveTodoBloc(locator()),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,

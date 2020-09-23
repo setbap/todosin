@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 part 'todo_model.g.dart';
 
-@HiveType(typeId: 4)
+@HiveType(typeId: 5)
 enum TodoStatus {
   @HiveField(1)
   TODO,
@@ -44,7 +44,7 @@ class TodoModel extends HiveObject with EquatableMixin {
   final DateTime endDate;
 
   @HiveField(6)
-  final Color color;
+  final int color;
 
   @HiveField(7)
   final TodoPriority priority;

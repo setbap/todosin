@@ -14,7 +14,7 @@ part 'edit_todo_state.dart';
 class EditTodoBloc extends Bloc<EditTodoEvent, EditTodoState> {
   // final HiveTodosRepository _repository;
   final RetrieveTodoBloc _todoBloc;
-  EditTodoBloc({TodosRepository repository, RetrieveTodoBloc retrieveTodoBloc})
+  EditTodoBloc({RetrieveTodoBloc retrieveTodoBloc})
       :
         // _repository = repository,
         _todoBloc = retrieveTodoBloc,
@@ -119,9 +119,11 @@ class EditTodoBloc extends Bloc<EditTodoEvent, EditTodoState> {
       );
     } else if (event is EditTodoSubmitEvent) {
       if (state.formzStatus.isValid) {
+        print("submiting in progress");
         try {
           yield state.copyWith(formzStatus: FormzStatus.submissionInProgress);
           if (event.id != null) {
+            print("submiting in update");
             _todoBloc.add(RetrieveTodoUpdateTodoEvent(
               TodoModel(
                 id: event.id,
@@ -129,13 +131,14 @@ class EditTodoBloc extends Bloc<EditTodoEvent, EditTodoState> {
                 note: state.note.value,
                 startDate: state.startDate.value,
                 endDate: state.endDate.value,
-                color: state.color.value,
+                color: state.color.value.value,
                 groupId: state.groupId.value,
                 priority: state.priority,
                 status: state.status,
               ),
             ));
           } else {
+            print("submiting in create");
             _todoBloc.add(RetrieveTodoAddTodoEvent(
               task: state.task.value,
               note: state.note.value,
@@ -151,7 +154,7 @@ class EditTodoBloc extends Bloc<EditTodoEvent, EditTodoState> {
       }
     } else if (event is EditTodoInitialWithTodoEvent) {
       yield EditTodoState(
-        color: MyColor.dirty(value: event.todo.color),
+        color: MyColor.dirty(value: Color(event.todo.color)),
         startDate: MyDate.dirty(value: event.todo.startDate),
         endDate: MyDate.dirty(value: event.todo.endDate),
         note: Name.dirty(value: event.todo.note),

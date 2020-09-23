@@ -8,7 +8,7 @@ part of 'todo_model.dart';
 
 class TodoStatusAdapter extends TypeAdapter<TodoStatus> {
   @override
-  final int typeId = 4;
+  final int typeId = 5;
 
   @override
   TodoStatus read(BinaryReader reader) {
@@ -114,7 +114,7 @@ class TodoModelAdapter extends TypeAdapter<TodoModel> {
       task: fields[2] as String,
       startDate: fields[4] as DateTime,
       endDate: fields[5] as DateTime,
-      color: fields[6] as Color,
+      color: fields[6] as int,
       groupId: fields[9] as String,
       priority: fields[7] as TodoPriority,
       status: fields[8] as TodoStatus,

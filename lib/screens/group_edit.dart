@@ -228,7 +228,7 @@ class BottomSheetContainer extends StatelessWidget {
                 SizedBox(height: 32),
                 MaterialButton(
                   onPressed: () {
-                    if (update != null)
+                    if (update == true)
                       context
                           .bloc<EditGroupBloc>()
                           .add(EditGroupSubmitEvent(id: id));

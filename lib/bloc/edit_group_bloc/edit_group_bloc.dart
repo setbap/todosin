@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
+import 'package:todo_repository/repository.dart';
 import 'package:todosin/bloc/retrieve_group_bloc/retrieve_color_bloc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -54,13 +55,13 @@ class EditGroupBloc extends Bloc<EditGroupEvent, EditGroupState> {
         yield state.copyWith(status: FormzStatus.submissionInProgress);
         try {
           if (event.id != null) {
-            // _retrieveColorBloc.add(
-            // RetrieveColorUpdateColorEvent(GroupModel(
-            //   id: event.id,
-            //   color: state.myColor.value.value,
-            //   name: state.groupName.value,
-            // )),
-            // );
+            _retrieveGroupBlocBloc.add(
+              RetrieveGroupUpdateColorEvent(GroupModel(
+                id: event.id,
+                color: state.myColor.value.value,
+                name: state.groupName.value,
+              )),
+            );
           } else {
             _retrieveGroupBlocBloc.add(
               RetrieveGroupAddGroupEvent(
